@@ -1,9 +1,21 @@
 import { useState } from "react";
-import { Link } from "@remix-run/react";
+import { Link, redirect } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { db } from "../services/index.js"; // Ścieżka do twojej konfiguracji Prisma
 import bcrypt from "bcryptjs";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase-config.js"; // Importuj Firebase auth
+import { getAuth } from "firebase-admin/auth"; // Firebase Admin SDK
 
+export async function verifyIdToken(token) {
+  try {
+    const auth = getAuth();
+    const decodedToken = await auth.verifyIdToken(token);
+    return decodedToken;
+  } catch (error) {
+    throw new Error("Token jest nieprawidłowy lub wygasł.");
+  }
+}
 export async function action({ request }) {
     const formData = new URLSearchParams(await request.text());
     const email = formData.get("email");
@@ -14,6 +26,21 @@ export async function action({ request }) {
       return json({ error: "Wszystkie pola są wymagane!" }, { status: 400 });
     }
   
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const token = await user.getIdToken(); // Pobieramy token z Firebase
+    
+        // Ustawiamy ciasteczko z tokenem
+        const headers = new Headers();
+        headers.set("Set-Cookie", `token=${token}; HttpOnly; Path=/; Secure; SameSite=Strict`);
+    
+        // Po pomyślnym logowaniu, przekierowujemy na stronę główną
+        return redirect("/", { headers });
+      } catch (error) {
+        return json({ error: "Błąd logowania: " + error.message }, { status: 401 });
+      }
+      
     // Szukanie użytkownika w bazie danych
     const user = await db.user.findUnique({
       where: {
@@ -39,9 +66,19 @@ export async function action({ request }) {
     return json({ message: "Zalogowano pomyślnie!" });
   }
 
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Jeśli użytkownik jest zalogowany, np. przekieruj na dashboard
+      window.location.href = "/";
+    } else {
+      // Jeśli użytkownik nie jest zalogowany
+      console.log("Użytkownik niezalogowany");
+    }
+  });
+
   export default function Login() {
     const [inputs, setInputs] = useState({});
-    const [errorMessage, setErrorMessage] = useState(""); // do obsługi błędów logowania
+    const [errorMessage, setErrorMessage] = useState(""); // Do obsługi błędów logowania
   
     const handleChange = (event) => {
       const name = event.target.name;
@@ -60,26 +97,18 @@ export async function action({ request }) {
       }
   
       try {
-        // Wysyłanie danych do backendu (w tym przypadku POST na /login)
-        const response = await fetch("/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-  
-        const result = await response.json();
-  
-        if (!response.ok) {
-          throw new Error(result.error || "Błąd logowania");
-        }
-  
-        // Jeśli logowanie jest udane, przekierowanie do strony głównej lub dashboardu
-        window.location.href = "/dashboard"; // Możesz przekierować na inną stronę
+        // Wykorzystanie Firebase do logowania
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const token = await user.getIdToken();
+        
+        localStorage.setItem("token", token);
+
+        // Jeżeli logowanie się powiedzie, możesz przekierować użytkownika do dashboardu
+        window.location.href = "/"; // Możesz przekierować na inną stronę
   
       } catch (error) {
-        setErrorMessage(error.message);
+        setErrorMessage(error.message); // Pokazanie błędu (np. "Niepoprawny email lub hasło")
       }
     };
   
@@ -90,40 +119,42 @@ export async function action({ request }) {
           {errorMessage && (
             <p className="text-red-500 mb-4">{errorMessage}</p> // Błąd logowania
           )}
-          <p>Adres e-mail*</p>
-          <input
-            type="email"
-            name="email"
-            value={inputs.email || ""}
-            onChange={handleChange}
-            required
-            className="border-2 border-black py-1"
-          />
-          <p>Hasło*</p>
-          <input
-            type="password"
-            name="password"
-            value={inputs.password || ""}
-            onChange={handleChange}
-            required
-            className="border-2 border-black py-1"
-          />
-          <div className="flex flex-row space-x-4 justify-between">
-            <button
-              onClick={handleSubmit}
-              className="px-4 py-2 bg-slate-500 text-white rounded-md"
-            >
-              Zaloguj się
-            </button>
-            <Link to="/register">
-              <button
-                type="button"
-                className="px-4 py-2 bg-slate-500 text-white rounded-md"
-              >
-                Zarejestruj się
-              </button>
-            </Link>
-          </div>
+            <form onSubmit={handleSubmit}> {/* Formularz obsługujący submit */}
+                <p>Adres e-mail*</p>
+                <input
+                    type="email"
+                    name="email"
+                    value={inputs.email || ""}
+                    onChange={handleChange}
+                    required
+                    className="border-2 border-black py-1"
+                />
+                <p>Hasło*</p>
+                <input
+                    type="password"
+                    name="password"
+                    value={inputs.password || ""}
+                    onChange={handleChange}
+                    required
+                    className="border-2 border-black py-1"
+                />
+                <div className="flex flex-row space-x-4 justify-between">
+                    <button
+                    onClick={handleSubmit}
+                    className="px-4 py-2 bg-slate-500 text-white rounded-md"
+                    >
+                    Zaloguj się
+                    </button>
+                    <Link to="/register">
+                    <button
+                        type="button"
+                        className="px-4 py-2 bg-slate-500 text-white rounded-md"
+                    >
+                        Zarejestruj się
+                    </button>
+                    </Link>
+                </div>
+            </form>
         </div>
       </main>
     );

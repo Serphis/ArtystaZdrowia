@@ -1,6 +1,25 @@
 import React from "react";
 import { Link } from "@remix-run/react";
 
+import { json } from "@remix-run/node";
+import { verifyIdToken } from "../routes/login"; // Funkcja do weryfikacji tokenu
+
+export async function loader({ request }) {
+  const cookieHeader = request.headers.get("Cookie");
+  const token = cookieHeader?.split('=')[1]; // Zakładając, że ciasteczko nazywa się 'token'
+
+  if (!token) {
+    return json({ error: "Brak tokenu" }, { status: 401 });
+  }
+
+  try {
+    const decodedToken = await verifyIdToken(token);
+    return json({ user: decodedToken });
+  } catch (error) {
+    return json({ error: "Błąd weryfikacji tokenu" }, { status: 401 });
+  }
+}
+
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
