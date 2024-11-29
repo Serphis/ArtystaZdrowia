@@ -43,10 +43,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <Link to="/" className="hover:underline py-2">
                 Ulubione
               </Link>
-              <Link to="/" className="hover:underline py-2">
+              <Link to="/login" className="hover:underline py-2">
                 Zaloguj się
               </Link>
-              <Link to="/" className="hover:underline py-2">
+              <Link to="/checkout" className="hover:underline py-2">
                 Koszyk
               </Link>
           </div>
@@ -59,7 +59,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Link to="/about" className="hover:underline">
               O firmie
             </Link>
-            <Link to="/products" className="hover:underline">
+            <Link to="/productList" className="hover:underline">
               Produkty
             </Link>
             <Link to="/treatments" className="hover:underline">
@@ -71,9 +71,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Link to="/felinotherapy" className="hover:underline">
               Felinoterapia
             </Link>
-            <Link to="/christmasIdeas" className="hover:underline">
+            {/* <Link to="/christmasIdeas" className="hover:underline">
               Pomysły na święta
-            </Link>
+            </Link> */}
             <Link to="/contact" className="hover:underline">
               Kontakt
             </Link>
