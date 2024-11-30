@@ -9,72 +9,72 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
-  email       String    @unique
-  password    String
-  name        String?
-  isAdmin     Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  ratings     Rating[]
-  orders      Order[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  name      String?
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  ratings   Rating[]
+  orders    Order[]
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
   price       Float
   stock       Int       @default(0)
   image       String?
-  category    Category? @relation(fields: [categoryId], references: [id])
-  categoryId  Int?
+  categoryId  String?   @db.ObjectId
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
   ratings     Rating[]
+  category    Category? @relation(fields: [categoryId], references: [id])
 
   OrderItem OrderItem[]
 }
 
 model Rating {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  productId   Int
-  rating      Int       @default(0) // Range: 1-5
-  comment     String?
-  createdAt   DateTime  @default(now())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  rating    Int      @default(0) // Range: 1-5
+  comment   String?
+  createdAt DateTime @default(now())
   
-  user        User      @relation(fields: [userId], references: [id])
-  product     Product   @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Order {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  total       Float
-  createdAt   DateTime  @default(now())
-  items       OrderItem[]
-  
-  user        User      @relation(fields: [userId], references: [id])
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String      @db.ObjectId
+  total     Float
+  createdAt DateTime    @default(now())
+  items     OrderItem[]
+
+  user      User        @relation(fields: [userId], references: [id])
 }
 
 model OrderItem {
-  id          Int       @id @default(autoincrement())
-  orderId     Int
-  productId   Int
-  quantity    Int
-  price       Float
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String    @db.ObjectId
+  productId String    @db.ObjectId
+  quantity  Int
+  price     Float
   
-  order       Order     @relation(fields: [orderId], references: [id])
-  product     Product   @relation(fields: [productId], references: [id])
+  order     Order     @relation(fields: [orderId], references: [id])
+  product   Product   @relation(fields: [productId], references: [id])
 }
 
 model Category {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique
-  products    Product[]
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String    @unique
+  products  Product[]
 }

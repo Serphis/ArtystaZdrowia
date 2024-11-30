@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@remix-run/react";
 
 import { json } from "@remix-run/node";
-import { verifyIdToken } from "../routes/login"; // Funkcja do weryfikacji tokenu
+import { verifyIdToken } from "../routes/loginPage"; // Funkcja do weryfikacji tokenu
 
 export async function loader({ request }) {
   const cookieHeader = request.headers.get("Cookie");

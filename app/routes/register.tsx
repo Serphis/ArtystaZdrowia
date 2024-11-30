@@ -1,111 +1,92 @@
-import { useState } from "react";
-import { Form } from "@remix-run/react";
-import { json, redirect } from '@remix-run/node';
-import { db } from '../services/index.js';  // Assuming you have Prisma setup
-import { z } from 'zod';
+import React, { useState } from "react";
+import type { V2_MetaFunction } from "@remix-run/node";
+import { ActionFunction, json, LoaderFunction } from '@remix-run/node';
+import { useActionData, Link } from "@remix-run/react";
 
-export const emailSchema = z.object({
-  email: z.string().email().min(1),
-  password: z.string().min(6),
-  confirmPassword: z.string().min(6),
-  fullName: z.string().min(1),
-});
+import { authenticator } from "../utils/auth.server"
+import { createUser } from "../utils/user.server"
+import { Textfield } from '../components/textfield';
 
-export async function action({ request }) {
-  const formData = await request.formData();
-  const entries = Object.fromEntries(formData.entries());
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "New Remix App login" }];
+};
 
-  const { error, success, data } = emailSchema.safeParse(entries);
-
-  if (!success) {
-    return new Response("Invalid data", { status: 400 });
-  }
-
-  const { email, password, confirmPassword, fullName } = data;
-
-  if (password !== confirmPassword) {
-    return new Response("Passwords do not match", { status: 400 });
-  }
-
-  const existingUser = await db.user.findUnique({ where: { email } });
-  if (existingUser) {
-    return new Response("User with this email already exists", { status: 400 });
-  }
-
-  const newUser = await db.user.create({
-    data: {
-      email,
-      password,
-      name: fullName,
-    },
-  });
-
-  return redirect('/login');
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request, {
+    successRedirect: "/"
+  })
+  return { user }
 }
 
-export default function Register() {
-  const [inputs, setInputs] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+export const action: ActionFunction = async ({ request }) => {
+  const form = await request.formData();
+  const action = form.get("_action");
+  const email = form.get("email");
+  const password = form.get("password");
+  const name = form.get("name");
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
+  if (
+    typeof action !== "string" ||
+    typeof email !== "string" ||
+    typeof password !== "string" ||
+    typeof name !== "string"
+  ) {
+    return json({ error: `Invalid Form Data`, form: action }, { status: 400 });
+  }
+
+  await createUser({email, password, name})
+
+  return await authenticator.authenticate("form", request, {
+    successRedirect: "/",
+    failureRedirect: "/signup",
+    context: {formData: form},
+  })
+}
+
+export default function Signup() {
+  const actionData = useActionData()
+  const [formData, setFormData] = useState({
+    email: actionData?.fields?.email || '',
+    password: actionData?.fields?.password || '',
+    name: actionData?.fields?.password || '',
+  })
+
+  // Updates the form data when an input changes
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    setFormData(form => ({ ...form, [field]: event.target.value }))
+  }
 
   return (
-    <Form method="post">
-      <main className="flex flex-row justify-center p-8 font-serif">
-        <div className="flex flex-col space-y-4 items-left px-10 py-4 w-4/5 md:w-2/5">
-          <h1 className="text-3xl mb-6">Rejestracja</h1>
-          <p>Imię*</p>
-          <input
-            type="text"
-            name="fullName"
-            value={inputs.fullName}
-            onChange={handleChange}
-            required
-            className="border-2 border-black py-1"
+      <div className="h-full justify-center items-center flex flex-col gap-y-5">
+        <form method="POST" className="rounded-2xl bg-white p-6 w-96">
+          <h2 className="text-3xl font-extrabold text-black-600 mb-5">Create an account</h2>
+          <Textfield
+            htmlFor="name"
+            type="name"
+            label="Name"
+            value={formData.name}
+            onChange={e => handleInputChange(e, 'name')}
           />
-          <p>Adres e-mail*</p>
-          <input
-            type="email"
-            name="email"
-            value={inputs.email}
-            onChange={handleChange}
-            required
-            className="border-2 border-black py-1"
+          <Textfield
+            htmlFor="email"
+            label="Email"
+            value={formData.email}
+            onChange={e => handleInputChange(e, 'email')}
           />
-          <p>Hasło*</p>
-          <input
+          <Textfield
+            htmlFor="password"
             type="password"
-            name="password"
-            value={inputs.password}
-            onChange={handleChange}
-            required
-            className="border-2 border-black py-1"
+            label="Password"
+            value={formData.password}
+            onChange={e => handleInputChange(e, 'password')}
           />
-          <p>Potwierdź hasło*</p>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={inputs.confirmPassword}
-            onChange={handleChange}
-            required
-            className="border-2 border-black py-1"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 w-1/3 bg-slate-500 text-white rounded-md"
-          >
-            Zarejestruj się
-          </button>
-        </div>
-      </main>
-    </Form>
+          <div className="w-full text-center mt-5">
+            <button type="submit" name="_action" value="Sign In" className="w-full rounded-xl mt-2 bg-red-500 px-3 py-2 text-white font-semibold transition duration-300 ease-in-out hover:bg-red-600">
+              Create an account
+            </button>
+          </div>
+        </form>
+        <p className="text-gray-600">Already have an account?<Link to="/loginPage"><span className="text-red-600 px-2 underline">Sign In</span></Link></p>
+      </div>
   );
 }
