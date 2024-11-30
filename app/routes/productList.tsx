@@ -1,10 +1,7 @@
-import { json, type V2_MetaFunction } from "@remix-run/node";
-import { redirect } from '@remix-run/node'
-import { Form, NavLink, useLoaderData } from "@remix-run/react";
-import { db } from '../services/index.js'
-import { z } from 'zod'
-import { useState } from 'react';
-import { Product } from '@prisma/client';
+import { LoaderFunction, json, ActionFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { loadProductData } from '../utils/dataLoader.server'; // Załaduj funkcję z pliku .server.ts
+import { db } from '../services/index'; // Baza danych
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -13,44 +10,47 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-export async function loader() {
-  const products = await db.product.findMany()
-  const ratings = await db.rating.findMany()
-  return {
-      data: products, ratings
-  }
-}
-
-export const emailSchema = z.object({
-  email: z.string().email().min(1)
-})
-
-export async function action({ request }){
-  const formData = await request.formData()
-  const entries = Object.fromEntries(formData.entries())
-
-  const { error, success, data } = emailSchema.safeParse(entries)
-
-  let { _action, ...values } = Object.fromEntries(formData)
-
-  if (!success) {
-      throw new Response("Not allowed", {
-          status: 400
-      })
-  }
+export const loader = async ({ request }) => {
+    const products = await db.product.findMany();
+    return { products };
+  };
+    
+  export const action: ActionFunction = async ({ request }) => {
+    const formData = new FormData(request.body);
+    const name = formData.get('name') as string;
+    const price = formData.get('price') as string;
+    const image = formData.get('image') as File;
   
-    console.log("wszystkie info---", data)
-}
+    const newProduct = await db.product.create({
+      data: {
+        name,
+        price: parseFloat(price),
+        image: image ? await uploadImage(image) : null,
+      },
+    });
+  
+    return json(newProduct);
+  };
+  
+  async function uploadImage(image: File): Promise<string> {
+    // Tu dodaj kod do uploadu zdjęcia (np. S3, Cloudinary)
+    return 'url-do-obrazka';
+  }  
 
 export default function ProductList(){
-  const { data: Products } = useLoaderData();
-  const [cartItems, setCartItems] = useState<Product[]>([]);
-
-  const addToCart = (product: Product) => {
-    setCartItems((prevItems) => [...prevItems, product]);
-    alert("Dodano produkt do koszyka!");
-  };
-
+    const { products } = useLoaderData();
+    const isAdmin = true; // Zmienna, która sprawdza, czy użytkownik jest administratorem
+  
+    const handleDelete = async (id: string) => {
+        const response = await fetch(`/api/products/${id}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          // Odświeżenie listy produktów po usunięciu
+          window.location.reload();
+        }
+      };
+    
   return (
       <main className="font-serif">
           <form method="post">
@@ -59,9 +59,17 @@ export default function ProductList(){
                     Produkty
                 </h1>
                 <div className="mt-4 p-10">
-                    {Products ? (
+                {/* {isAdmin && (
+                    <button
+                    className="bg-green-500 text-white px-4 py-2 rounded-full mb-4"
+                    onClick={() => window.location.href = '/createProduct'} // Przekierowanie do formularza
+                    >
+                    +
+                    </button>
+                )} */}
+                    {products ? (
                         <div className="flex flex-row flex-wrap gap-5">
-                            {Products.map((Product: Product) => (
+                            {products.map((Product: Product) => (
                                 <div key={Product.id}>
                                     <div className="flex flex-col ring-1 w-60 md:w-80 ring-slate-300 bg-slate-100 text-slate-600 rounded-sm shadow-md">
                                         <div className="flex flex-col items-center">
@@ -74,6 +82,7 @@ export default function ProductList(){
                                                 {Product.name}
                                             </div>
                                             <div>{Product.price} zł</div>
+                                            <button onClick={() => handleDelete(product.id)}>Usuń</button>
                                         </div>
                                         <div className="flex justify-start p-2">
                                             <button

@@ -1,5 +1,4 @@
 import { Form } from "@remix-run/react";
-import { HiTrash } from "react-icons/hi2";
 
 export interface TaskListProps {
   category: any
@@ -23,7 +22,6 @@ export function Tasklist({ category, message, id }: TaskListProps) {
             type="submit"
             value="delete"
           >
-            <HiTrash/>
           </button>
           <input type="hidden" name="id" value={id} />
         </Form>

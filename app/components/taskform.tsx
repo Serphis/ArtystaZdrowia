@@ -1,5 +1,5 @@
 import { Form } from "@remix-run/react";
-import { categories } from '~/types/jobs'
+import { categories } from '../types/jobs'
 
 export function Taskform() {
   return (
