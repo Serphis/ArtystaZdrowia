@@ -38,9 +38,9 @@ const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null
             </div> */}
 
             {/* Linki do Ulubione, Zaloguj/Wyloguj, Koszyk */}
-            <Link to="/" className="hover:underline">
+            {/* <Link to="/" className="hover:underline">
               Ulubione
-            </Link>
+            </Link> */}
             {userId !== null ? (
               <form method="post" action="/logout">
                 <button type="submit">Wyloguj się</button>
@@ -48,7 +48,7 @@ const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null
             ) : (
               <Link to="/login">Zaloguj się</Link>
             )}
-            <Link to="/checkout" className="hover:underline">
+            <Link to="/cart" className="hover:underline">
               Koszyk
             </Link>
           </div>

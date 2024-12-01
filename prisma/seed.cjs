@@ -40,7 +40,7 @@ var client_1 = require("@prisma/client");
 var prisma = new client_1.PrismaClient();
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var opis1, opis2, opis3, opis4, opis5, opis6, opis7, products, _i, products_1, product;
+        var opis1, opis2, opis3, opis4, opis5, opis6, opis7, products, _i, products_1, product, createdProduct;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -55,58 +55,86 @@ function main() {
                         {
                             name: 'Perfumowana Świeca Sojowa Lady M',
                             description: opis1,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/r3kuos5p66yzwtgc7ucd.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                         {
                             name: 'Perfumowana Świeca Sojowa Si',
                             description: opis2,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/q08xfzu2afg2iysf093f.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                         {
                             name: 'Świeca Sojowa Bawełna',
                             description: opis3,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/lepa6zlka5vgpjinxibq.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                         {
                             name: 'Świeca Sojowa Christmas',
                             description: opis4,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/ngcxnqdshaadqdq3aook.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                         {
                             name: 'Świeca Sojowa Lawenda',
                             description: opis5,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/lw8tmhhpvt3wb1vf8tnu.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                         {
                             name: 'Świeca Sojowa Pierniczek',
                             description: opis6,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/nadrkazxnrvlrpoi8aeu.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                         {
                             name: 'Świeca Sojowa Świąteczny Poranek',
                             description: opis7,
-                            price: 50.00,
                             stock: 0,
-                            image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/pu0zwwrf5uilvuiipwfx.jpg',
                             categoryId: null,
+                            sizes: [
+                                { name: 'S - 40g', price: 12.00 },
+                                { name: 'M - 90g', price: 25.00 },
+                                { name: 'L - 190g', price: 50.00 }
+                            ]
                         },
                     ];
                     _i = 0, products_1 = products;
@@ -115,17 +143,28 @@ function main() {
                     if (!(_i < products_1.length)) return [3 /*break*/, 4];
                     product = products_1[_i];
                     return [4 /*yield*/, prisma.product.create({
-                            data: product,
+                            data: {
+                                name: product.name,
+                                description: product.description,
+                                stock: product.stock,
+                                image: product.image,
+                                categoryId: product.categoryId,
+                                sizes: {
+                                    create: product.sizes.map(function (size) { return ({
+                                        name: size.name,
+                                        price: size.price
+                                    }); })
+                                }
+                            },
                         })];
                 case 2:
-                    _a.sent();
+                    createdProduct = _a.sent();
+                    console.log("Produkt ".concat(createdProduct.name, " zosta\u0142 dodany do bazy!"));
                     _a.label = 3;
                 case 3:
                     _i++;
                     return [3 /*break*/, 1];
-                case 4:
-                    console.log('Produkty zostały dodane do bazy danych!');
-                    return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     });

@@ -16,69 +16,108 @@ async function main() {
     {
       name: 'Perfumowana Świeca Sojowa Lady M',
       description: opis1,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/r3kuos5p66yzwtgc7ucd.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
     {
       name: 'Perfumowana Świeca Sojowa Si',
       description: opis2,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/q08xfzu2afg2iysf093f.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
     {
       name: 'Świeca Sojowa Bawełna',
       description: opis3,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/lepa6zlka5vgpjinxibq.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
     {
       name: 'Świeca Sojowa Christmas',
       description: opis4,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/ngcxnqdshaadqdq3aook.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
     {
       name: 'Świeca Sojowa Lawenda',
       description: opis5,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/lw8tmhhpvt3wb1vf8tnu.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
     {
       name: 'Świeca Sojowa Pierniczek',
       description: opis6,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/nadrkazxnrvlrpoi8aeu.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
     {
       name: 'Świeca Sojowa Świąteczny Poranek',
       description: opis7,
-      price: 50.00,
       stock: 0,
-      image: 'https://sklep119227.shoparena.pl/environment/cache/images/750_750_productGfx_181/lady.webp',
+      image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/pu0zwwrf5uilvuiipwfx.jpg',
       categoryId: null,
+      sizes: [
+        { name: 'S - 40g', price: 12.00 },
+        { name: 'M - 90g', price: 25.00 },
+        { name: 'L - 190g', price: 50.00 }
+      ]
     },
   ];
 
-  // Wgraj dane do bazy
-  for (const product of products) {
-    await prisma.product.create({
-      data: product,
-    });
-  }
+for (const product of products) {
+  const createdProduct = await prisma.product.create({
+    data: {
+      name: product.name,
+      description: product.description,
+      stock: product.stock,
+      image: product.image,
+      categoryId: product.categoryId,
+      sizes: {
+        create: product.sizes.map((size) => ({
+          name: size.name,
+          price: size.price
+        }))
+      }
+    },
+  });
 
-  console.log('Produkty zostały dodane do bazy danych!');
+  console.log(`Produkt ${createdProduct.name} został dodany do bazy!`);
+}
 }
 
 main()
