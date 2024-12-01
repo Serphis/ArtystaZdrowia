@@ -26,22 +26,18 @@ export const action: ActionFunction = async ({ request, params }) => {
     status: 302,
   });
 };
+
 export const loader: LoaderFunction = async ({ request, params }) => {
   try {
-    // Odbierz dane o użytkowniku z sesji
-    const userSession = await getUserSession(request);
-    const userId = userSession?.userId;
-    const isAdmin = userSession?.isAdmin;
-
-    // Pobierz produkt z bazy danych na podstawie id
     const productId = params.productId;
 
+    // Pobierz produkt z bazy danych na podstawie id
     const product = await db.product.findUnique({
       where: { id: productId },
-        include: {
-          sizes: true, // Załadowanie powiązanych rozmiarów
-        },
-      });
+      include: {
+        sizes: true, // Załadowanie powiązanych rozmiarów
+      },
+    });
 
     if (!product) {
       throw new Response("Produkt nie znaleziony", { status: 404 });
@@ -51,60 +47,41 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const session = await getSession(request);
     const cart = session.get("cart") || [];
 
-    // Zwróć dane o produkcie, użytkowniku i koszyku
-    return json({ product, userId, isAdmin, cart });
+    // Zwróć dane o produkcie, koszyku
+    return json({ product, cart });
   } catch (error) {
-    // Obsłuż błąd związany z nieprawidłowym ObjectID lub innymi błędami
-    if (error.code === 'P2023') {
-      console.log("Błąd związany z nieprawidłowym ObjectID, ignorowany.");
-      // Zwróć odpowiedź z ogólnym komunikatem o błędzie
-      return json({ error: "Błąd podczas pobierania produktu. Spróbuj ponownie." }, { status: 500 });
-    }
-
-    // Inne błędy
-    throw error;
+    console.error(error);
+    return json({ error: "Błąd podczas pobierania produktu. Spróbuj ponownie." }, { status: 500 });
   }
 };
 
 export default function ProductInfo() {
-  const { product, userId, isAdmin, cart } = useLoaderData(); // Odbierz dane z loadera
+  const { product, cart } = useLoaderData(); // Odbierz dane z loadera
 
-  console.log("Dane produktu:", product); // Logi dla danych produktu, sprawdź, czy są poprawne
+  // Logowanie danych produktu i koszyka w celu diagnostyki
+  console.log("Dane produktu:", product);
+  console.log("Koszyk:", cart);
 
-  if (!product.sizes) {
-    console.error("Brak rozmiarów w danych produktu!");
-  } else {
-    console.log("Rozmiary produktu przed konwersją:", product.sizes); // Logi przed konwersją
-  }
-
+  // Konwertowanie rozmiarów na tablicę
   const sizesArray = Object.entries(product.sizes).map(([name, { price }]) => ({
     name,
     price,
   }));
 
-  console.log("Rozmiary po konwersji na tablicę:", sizesArray); // Logi po konwersji na tablicę
+  console.log("Rozmiary po konwersji na tablicę:", sizesArray);
 
-  if (!sizesArray || sizesArray.length === 0) {
-    return <div>Brak dostępnych rozmiarów dla tego produktu.</div>;
-  }
-
+  // Ustawienie domyślnego rozmiaru
   const [selectedSize, setSelectedSize] = useState(sizesArray[0]?.name || ''); // Domyślny rozmiar
   const [price, setPrice] = useState(sizesArray[0]?.price || 0); // Domyślna cena
 
-  console.log("Domyślnie wybrany rozmiar:", selectedSize); // Logi dla domyślnego rozmiaru
-  console.log("Domyślna cena:", price); // Logi dla domyślnej ceny
-
-  // Obsługa zmiany rozmiaru
   const handleSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSize = event.target.value;
-    console.log("Nowy wybrany rozmiar:", newSize); // Logi dla nowego wybranego rozmiaru
     setSelectedSize(newSize);
 
     // Znajdź nowy rozmiar i zaktualizuj cenę
     const size = sizesArray.find((size) => size.name === newSize);
     if (size) {
       setPrice(size.price);
-      console.log("Zaktualizowana cena dla rozmiaru:", size.name, "Cena:", size.price); // Logi dla zaktualizowanej ceny
     }
   };
 
@@ -121,10 +98,9 @@ export default function ProductInfo() {
         "Content-Type": "application/json",
       },
     });
-
-    // Możesz dodać odświeżenie koszyka lub inny sposób aktualizacji.
   };
 
+  const sizeLabels = ['Mały (40g)', 'Średni (90g)', 'Duży (190g)']; // mapowanie liczb na nazwy rozmiarów
 
   return (
     <main className="font-serif">
@@ -140,7 +116,7 @@ export default function ProductInfo() {
             <div>
               <h2>{product.name}</h2>
               <p>{product.description}</p>
-              <div>Cena od: {product.sizes[0]?.price} zł</div>
+              <div>Cena od: {price} zł</div>
             </div>
           </div>
         </div>
@@ -159,9 +135,9 @@ export default function ProductInfo() {
               className="border rounded p-2 w-full"
               required
             >
-              {product.sizes.map((size) => (
+              {sizesArray.map((size, index) => (
                 <option key={size.name} value={size.name}>
-                  {size.name} - {size.price} zł
+                  {sizeLabels[index]} - {size.price} zł
                 </option>
               ))}
             </select>

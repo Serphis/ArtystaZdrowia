@@ -38,128 +38,135 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var client_1 = require("@prisma/client");
 var prisma = new client_1.PrismaClient();
+var opis1 = "Nuty zapachowe Top: Bergamot, Pear, Berry Mid: Coconut, Jasmine, Rose Dry: Cashmere, Amber, Patchouli, Musk Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table). DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6). Wszystkie zapachy IPRA France produkowane są w stolicy zapachów - Grasse we Francji.";
+var opis2 = "Świeca sojowa zapachowa, zapach o nazwie Giorgio Armani Si. 100% wosku sojowego Nuty zapachowe: Top: orange, peach, pear, crisp greens Mid: jasmine, tuberose, petitgrain, lavender, rose, geranium, violet Base: cedarwood, cashmere woods, vanilia, amber musk Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table). DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6).";
+var opis3 = "Nuty Głowy: Róża, Aldehyd Nuty Serca: Fiołek, Kwiat Bawełny Nuty Bazy: Białe Piżmo, Drzewo Cedrowe Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table) Jednocześnie zobowiązujemy się niezwłocznie powiadomić Państwa gdyby sytuacja ta uległa zmianie. DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6)";
+var opis4 = "Nuty zapachowe: Top: Orange, Clove, Winterberry, Zest Aire Mid: Cinnamon, Cedar, Siberian Fir, Violet, Patchouli Dry: Tonka, Cedar Zapachy IPRA France produkowane są w stolicy zapachów - Grasse we Francji.";
+var opis5 = "Specjalna kompozycja olejku zapachowego lawendy oraz towarzyszących jej olejków mandarynki, trawy cytrynowej, geranium, paczuli, nut pudrowych, piżma, cedru. Zapachy produkowane są w stolicy zapachów - Grasse we Francji.";
+var opis6 = "Nuty Zapachowe Nuty Głowy: Pieczone Jabłko, Cynamon Nuty Serca: Piernik, Goździki Nuty Bazy: Wanilia Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table). DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6).";
+var opis7 = "Nuty zapachowe Nuty Głowy: Czerwone jagody Nuty Serca: Igły Sosnowe, Mięta Nuty Bazy: Mech Drzewny, Balsam Jodłowy Zapachy IPRA France produkowane są w stolicy zapachów - Grasse we Francji.";
+var products = [
+    {
+        name: 'Perfumowana Świeca Sojowa Lady M',
+        description: opis1,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/r3kuos5p66yzwtgc7ucd.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+    {
+        name: 'Perfumowana Świeca Sojowa Si',
+        description: opis2,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/q08xfzu2afg2iysf093f.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+    {
+        name: 'Świeca Sojowa Bawełna',
+        description: opis3,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/lepa6zlka5vgpjinxibq.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+    {
+        name: 'Świeca Sojowa Christmas',
+        description: opis4,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/ngcxnqdshaadqdq3aook.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+    {
+        name: 'Świeca Sojowa Lawenda',
+        description: opis5,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/lw8tmhhpvt3wb1vf8tnu.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+    {
+        name: 'Świeca Sojowa Pierniczek',
+        description: opis6,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/nadrkazxnrvlrpoi8aeu.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+    {
+        name: 'Świeca Sojowa Świąteczny Poranek',
+        description: opis7,
+        stock: 0,
+        image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/pu0zwwrf5uilvuiipwfx.jpg',
+        sizes: [
+            { name: 'S - 40g', price: 12.00 },
+            { name: 'M - 90g', price: 25.00 },
+            { name: 'L - 190g', price: 50.00 }
+        ]
+    },
+];
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var opis1, opis2, opis3, opis4, opis5, opis6, opis7, products, _i, products_1, product, createdProduct;
+        var _loop_1, _i, products_1, product;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    opis1 = "Nuty zapachowe Top: Bergamot, Pear, Berry Mid: Coconut, Jasmine, Rose Dry: Cashmere, Amber, Patchouli, Musk Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table). DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6). Wszystkie zapachy IPRA France produkowane są w stolicy zapachów - Grasse we Francji.";
-                    opis2 = "Świeca sojowa zapachowa, zapach o nazwie Giorgio Armani Si. 100% wosku sojowego Nuty zapachowe: Top: orange, peach, pear, crisp greens Mid: jasmine, tuberose, petitgrain, lavender, rose, geranium, violet Base: cedarwood, cashmere woods, vanilia, amber musk Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table). DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6).";
-                    opis3 = "Nuty Głowy: Róża, Aldehyd Nuty Serca: Fiołek, Kwiat Bawełny Nuty Bazy: Białe Piżmo, Drzewo Cedrowe Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table) Jednocześnie zobowiązujemy się niezwłocznie powiadomić Państwa gdyby sytuacja ta uległa zmianie. DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6)";
-                    opis4 = "Nuty zapachowe: Top: Orange, Clove, Winterberry, Zest Aire Mid: Cinnamon, Cedar, Siberian Fir, Violet, Patchouli Dry: Tonka, Cedar Zapachy IPRA France produkowane są w stolicy zapachów - Grasse we Francji.";
-                    opis5 = "Specjalna kompozycja olejku zapachowego lawendy oraz towarzyszących jej olejków mandarynki, trawy cytrynowej, geranium, paczuli, nut pudrowych, piżma, cedru. Zapachy produkowane są w stolicy zapachów - Grasse we Francji.";
-                    opis6 = "Nuty Zapachowe Nuty Głowy: Pieczone Jabłko, Cynamon Nuty Serca: Piernik, Goździki Nuty Bazy: Wanilia Zapachy są zgodne ze standardami INTERNATIONAL FRAGRANCE ASSOCIATION (IFRA). (Certyfikaty IFRA dla poszczególnych produktów dostępne na żądanie). Zapachy są zgodne z przepisami REACH oraz żaden z produktów, ani jego opakowanie, nie zawierają substancji opublikowanych przez Europejską Agencję Chemiczną (ECHA) w zaktualizowanej liście kandydatów SVHC (substancje wzbudzające szczególnie duże obawy) zgodnie ze stanem na dzień 07.2019 (https://echa.europa.eu/en/candidate-list-table). DEKLARACJA ZGODNOŚCI Certyfikacja wegańska – zgodnie z naszą najlepszą wiedzą, firma French Color and Fragrance Co. nie wykorzystuje w produktach żadnych składników zapachowych ani barwników pochodzących od zwierząt. Zapachy ani żaden z ich składników (wymienionych w THE INTERNATIONAL COSMETIC INGREDIENT DICTIONARY AND HANDBOOK – edycja 8) nie były testowane przez French Color & Fragrance na zwierzętach – ANIMAL NON-TESTING DECLARATION (TI/9/6).";
-                    opis7 = "Nuty zapachowe Nuty Głowy: Czerwone jagody Nuty Serca: Igły Sosnowe, Mięta Nuty Bazy: Mech Drzewny, Balsam Jodłowy Zapachy IPRA France produkowane są w stolicy zapachów - Grasse we Francji.";
-                    products = [
-                        {
-                            name: 'Perfumowana Świeca Sojowa Lady M',
-                            description: opis1,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/r3kuos5p66yzwtgc7ucd.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                        {
-                            name: 'Perfumowana Świeca Sojowa Si',
-                            description: opis2,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/q08xfzu2afg2iysf093f.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                        {
-                            name: 'Świeca Sojowa Bawełna',
-                            description: opis3,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/lepa6zlka5vgpjinxibq.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                        {
-                            name: 'Świeca Sojowa Christmas',
-                            description: opis4,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/ngcxnqdshaadqdq3aook.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                        {
-                            name: 'Świeca Sojowa Lawenda',
-                            description: opis5,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/lw8tmhhpvt3wb1vf8tnu.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                        {
-                            name: 'Świeca Sojowa Pierniczek',
-                            description: opis6,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/nadrkazxnrvlrpoi8aeu.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                        {
-                            name: 'Świeca Sojowa Świąteczny Poranek',
-                            description: opis7,
-                            stock: 0,
-                            image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/pu0zwwrf5uilvuiipwfx.jpg',
-                            categoryId: null,
-                            sizes: [
-                                { name: 'S - 40g', price: 12.00 },
-                                { name: 'M - 90g', price: 25.00 },
-                                { name: 'L - 190g', price: 50.00 }
-                            ]
-                        },
-                    ];
+                    _loop_1 = function (product) {
+                        var createdProduct, sizesData;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0: return [4 /*yield*/, prisma.product.create({
+                                        data: {
+                                            name: product.name,
+                                            description: product.description,
+                                            stock: product.stock,
+                                            image: product.image,
+                                        },
+                                    })];
+                                case 1:
+                                    createdProduct = _b.sent();
+                                    sizesData = product.sizes.map(function (size) { return ({
+                                        name: size.name,
+                                        price: size.price,
+                                        productId: createdProduct.id,
+                                    }); });
+                                    return [4 /*yield*/, prisma.size.createMany({
+                                            data: sizesData,
+                                        })];
+                                case 2:
+                                    _b.sent();
+                                    console.log("Produkt ".concat(createdProduct.name, " zosta\u0142 dodany do bazy z rozmiarami!"));
+                                    return [2 /*return*/];
+                            }
+                        });
+                    };
                     _i = 0, products_1 = products;
                     _a.label = 1;
                 case 1:
                     if (!(_i < products_1.length)) return [3 /*break*/, 4];
                     product = products_1[_i];
-                    return [4 /*yield*/, prisma.product.create({
-                            data: {
-                                name: product.name,
-                                description: product.description,
-                                stock: product.stock,
-                                image: product.image,
-                                categoryId: product.categoryId,
-                                sizes: {
-                                    create: product.sizes.map(function (size) { return ({
-                                        name: size.name,
-                                        price: size.price
-                                    }); })
-                                }
-                            },
-                        })];
+                    return [5 /*yield**/, _loop_1(product)];
                 case 2:
-                    createdProduct = _a.sent();
-                    console.log("Produkt ".concat(createdProduct.name, " zosta\u0142 dodany do bazy!"));
+                    _a.sent();
                     _a.label = 3;
                 case 3:
                     _i++;
