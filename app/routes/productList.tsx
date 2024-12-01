@@ -82,7 +82,7 @@ export default function ProductList(){
                                                 {Product.name}
                                             </div>
                                             <div>{Product.price} zł</div>
-                                            <button onClick={() => handleDelete(product.id)}>Usuń</button>
+                                            {/* <button onClick={() => handleDelete(product.id)}>Usuń</button> */}
                                         </div>
                                         <div className="flex justify-start p-2">
                                             <button
