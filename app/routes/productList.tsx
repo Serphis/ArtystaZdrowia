@@ -97,12 +97,12 @@ export default function ProductList(){
                             <div>{Product.price} zł</div>
                           </div>
                           <div className="flex justify-start p-2">
-                            {/* <button
-                                onClick={() => addToCart(Product)}
-                                className="hover:bg-slate-600 bg-slate-800 text-white text-sm font-medium px-4 py-2 rounded-sm shadow-md"
-                              >
-                                Dodaj do koszyka
-                              </button> */}
+                            <Link
+                              to={`/${Product.id}`} // Link do szczegółów produktu
+                              className="hover:bg-slate-600 bg-slate-800 text-white text-sm font-medium px-4 py-2 rounded-sm shadow-md"
+                            >
+                              Do koszyka
+                            </Link>
                           </div>
                         </div>
                       </div>
