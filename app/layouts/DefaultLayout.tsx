@@ -1,4 +1,31 @@
 import { Link } from "@remix-run/react";
+// import { prisma } from "../db";
+// import { LoaderFunction, json } from '@remix-run/node';
+// import { getUserFromSession } from "../utils/session.server";
+// import { useLoaderData } from '@remix-run/react';
+
+// export const loader: LoaderFunction = async ({ request }) => {
+//   const currentUser = await getUserFromSession(request);
+
+//   return json(currentUser);
+// }
+function Login(props) {
+  return <Link to="/login">Zaloguj się</Link>;
+}
+
+function Logout(props) {
+  return <form method="post" action="/logout">
+    <button type="submit">Wyloguj się</button>
+    </form>;
+}
+
+export function HandleLogin(props){
+  const userId = props.userId;
+  if (userId) {
+    return <Logout />;
+  }
+  return <Login />;
+}
 
 const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null }> = ({ children, userId }) => {
 
@@ -41,13 +68,9 @@ const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null
             {/* <Link to="/" className="hover:underline">
               Ulubione
             </Link> */}
-            {userId !== null ? (
-              <form method="post" action="/logout">
-                <button type="submit">Wyloguj się</button>
-              </form>
-            ) : (
-              <Link to="/login">Zaloguj się</Link>
-            )}
+
+            <HandleLogin userId={userId} />
+
             <Link to="/cart" className="hover:underline">
               Koszyk
             </Link>
