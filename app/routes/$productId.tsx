@@ -82,7 +82,6 @@ export default function ProductInfo() {
                       action={`/cart`}
                       onSubmit={(e) => {
                         e.preventDefault();
-                        addToCart(session, productId, quantity, selectedSize, sizes.find(s => s.id === selectedSize)?.price);
                       }}
                     >
                       <div>
