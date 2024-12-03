@@ -5,16 +5,11 @@ import {
   Scripts,
   useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
-import styles from "./styles/tailwind.css";
+import "./tailwind.css";
 import DefaultLayout from "./layouts/DefaultLayout"; // Poprawny import layoutu
 import { getUserSession } from "./utils/auth.server";
 import { db } from './services/index';  // Adjust path accordingly
 import { json, LoaderFunction, redirect } from "@remix-run/node";
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
-];
 
 export const loader: LoaderFunction = async ({ request }) => {
   const sessionData = await getUserSession(request);
@@ -55,6 +50,7 @@ export default function App() {
         
         <DefaultLayout userId={user.userId} isAdmin={user.isAdmin}>
           <Outlet />
+          <Scripts />
         </DefaultLayout>
       </body>
     </html>
