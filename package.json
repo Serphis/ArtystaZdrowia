@@ -10,7 +10,9 @@
     "start": "cross-env NODE_ENV=production node ./server.js",
     "typecheck": "tsc",
     "seed": "ts-node prisma/seed.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "dev": "node server.dev.js",
+    "start": "node server.prod.js"  
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",
