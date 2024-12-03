@@ -49,12 +49,13 @@ export default function App() {
         />
         <Meta />
         <Links />
+        <Scripts />
       </head>
       <body>
+        
         <DefaultLayout userId={user.userId} isAdmin={user.isAdmin}>
           <Outlet />
         </DefaultLayout>
-        <Scripts />
       </body>
     </html>
   );
