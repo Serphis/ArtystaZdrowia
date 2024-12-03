@@ -6,7 +6,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-import "./tailwind.css"
+import "./tailwind.css";
 import DefaultLayout from "./layouts/DefaultLayout"; // Poprawny import layoutu
 import { getUserSession } from "./utils/auth.server";
 import { db } from './services/index';  // Adjust path accordingly
