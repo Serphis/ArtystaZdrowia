@@ -1,12 +1,12 @@
 import { Link } from "@remix-run/react";
 
 function Login(props) {
-  return <Link to="/login">Zaloguj się</Link>;
+  return <Link to="/login" className="text-xs font-light">ZALOGUJ SIĘ</Link>;
 }
 
 function Logout(props) {
   return <form method="post" action="/logout">
-    <button type="submit">Wyloguj się</button>
+    <button type="submit" className="text-xs font-light">WYLOGUJ SIĘ</button>
     </form>;
 }
 
@@ -21,77 +21,55 @@ export function HandleLogin(props){
 const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null, isAdmin?: boolean | null }> = ({ children, userId, isAdmin }) => {
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col font-tenor">
       {/* HEADER */}
-      <header className="sticky top-0 bg-slate-200 z-30 shadow-sm">
-        <div className="flex justify-between items-center p-4 px-8">
-          <Link to="/" className="text-xl font-bold text-blue-900">
-            Artysta Zdrowia
+      <header className="bg-[#7b6b63] z-30 shadow-sm">
+        <div className="sticky top-0 flex justify-center items-center p-2 px-8 space-x-10 text-[#f2e4ca] text-xs font-light tracking-widest">
+          <Link to="/cart" className="group text-[#f2e4ca] transition duration-300">
+            KOSZYK
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-[#f2e4ca] rounded-lg"></span>
           </Link>
-
-          <div className="flex items-center space-x-6">
-            {/* Pasek wyszukiwania */}
-            {/* <div className="flex">
-              <input
-                type="text"
-                placeholder="Szukaj"
-                className="pl-4 pr-2 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button className="px-3 bg-black text-white rounded-r-md hover:bg-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M11 17a6 6 0 111.004-12.001A6 6 0 0111 17zM20 20l-4-4"
-                  />
-                </svg>
-              </button>
-            </div> */}
-
-            {/* Linki do Ulubione, Zaloguj/Wyloguj, Koszyk */}
-            {/* <Link to="/" className="hover:underline">
-              Ulubione
-            </Link> */}
-
+          <Link to="/" className="text-xl font-bold p-1 px-2 rounded-lg border-[#f2e4ca]">
+            <img src="https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/rafg9eeobv8ulx50czcz.jpg" alt="Opis zdjęcia" className='h-12 object-cover' />
+          </Link>
+          <div className="group text-[#f2e4ca] transition duration-300">
             <HandleLogin userId={userId} />
-
-            <Link to="/cart" className="hover:underline">
-              Koszyk
-            </Link>
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#f2e4ca]"></span>
           </div>
         </div>
 
         {/* Dolny pasek nawigacyjny */}
-        <nav className="flex justify-center space-x-6 bg-slate-100 p-2">
-          <Link to="/" className="hover:underline">
+        <nav className="flex justify-center space-x-6 bg-[#f2e4ca] text-[#987867] p-2 text-xs font-normal tracking-wide">
+          <Link to="/" className="group text-[#987867] transition duration-300">
             Strona główna
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
-          <Link to="/about" className="hover:underline">
+          <Link to="/about" className="group text-[#987867] transition duration-300">
             O firmie
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
-          <Link to="/productList" className="hover:underline">
+          <Link to="/productList" className="group text-[#987867] transition duration-300">
             Produkty
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
-          <Link to="/treatments" className="hover:underline">
+          <Link to="/treatments" className="group text-[#987867] transition duration-300">
             Zabiegi
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
-          <Link to="/dogotherapy" className="hover:underline">
+          <Link to="/dogotherapy" className="group text-[#987867] transition duration-300">
             Dogoterapia
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
-          <Link to="/felinotherapy" className="hover:underline">
+          <Link to="/felinotherapy" className="group text-[#987867] transition duration-300">
             Felinoterapia
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
-          <Link to="/contact" className="hover:underline">
+          <Link to="/contact" className="group text-[#987867] transition duration-300">
             Kontakt
+            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 rounded-lg bg-[#987867]"></span>
           </Link>
         </nav>
+        
       </header>
 
       {/* MAIN */}
@@ -108,5 +86,7 @@ const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null
     </div>
   );
 };
+
+
 
 export default DefaultLayout;
