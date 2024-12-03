@@ -1,13 +1,14 @@
 import { useLoaderData } from "@remix-run/react";
-import { db } from "../services/index"; // Zimportuj bazę danych
+import { db } from "../services/index";
 import { ActionFunction, LoaderFunction, json, redirect } from "@remix-run/node";
 import { getSession, commitSession, addToCart } from "../utils/session.server";
+import { useState } from "react";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request);
-  const cart = session.get("cart") || [];  // Upewnij się, że domyślnie jest to pusta tablica
-
-  console.log("Cart from session:", cart);  // Sprawdź, co jest w koszyku na początku
+  const cart = session.get("cart") || [];
+  const products = await db.product.findMany();
+  const sizes = await db.size.findMany();
 
   if (cart.length === 0) {
     return json({ cart: [], message: "Koszyk jest pusty." });
@@ -19,8 +20,6 @@ export const loader: LoaderFunction = async ({ request }) => {
         where: { id: item.productId },
         select: { name: true, image: true },
       });
-      
-      console.log("Product for item:", product);  // Zobacz, co zwraca zapytanie do bazy
 
       return {
         ...item,
@@ -30,35 +29,27 @@ export const loader: LoaderFunction = async ({ request }) => {
     })
   );
 
-  return cart ;
+  return { cart: enhancedCart, products, sizes };
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  // Pobranie danych z formularza za pomocą FormData
   const formData = await request.formData();
 
-  // Pobieranie danych z formularza
   const productId = formData.get("productId")?.toString();
   const sizeId = formData.get("size")?.toString();
   const quantity = parseInt(formData.get("quantity")?.toString() || "1", 10);
   const price = parseFloat(formData.get("price")?.toString() || "0");
 
-  // Walidacja danych
   if (!productId || !sizeId || isNaN(quantity) || isNaN(price)) {
     console.warn("Brakuje danych w formularzu lub dane są nieprawidłowe.");
-    console.warn({ productId, sizeId, quantity, price });
   }
 
-  // Pobranie sesji
   const session = await getSession(request);
 
-  // Dodanie produktu do koszyka w sesji
   await addToCart(session, productId, quantity, sizeId, price);
 
-  // Zatwierdzenie sesji
   const commit = await commitSession(session);
 
-  // Przekierowanie do strony koszyka z ciasteczkiem sesji
   return redirect("/cart", {
     headers: {
       "Set-Cookie": commit,
@@ -67,18 +58,34 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Cart() {
-  const cart = useLoaderData();
+  const { cart, message, products, sizes } = useLoaderData();
 
-  console.log("Cart component - loaded cart data:", cart);
-
+  // Dopasuj przedmioty w koszyku
   const cartItems = Array.isArray(cart) ? cart : [];
+
+  const updatedCart = cartItems.map((item) => {
+    // Znajdź produkt odpowiadający productId w cart
+    const product = products.find((p) => p.id === item.productId);
+  
+    // Znajdź odpowiedni rozmiar na podstawie sizeId z cart
+    const size = sizes.find((s) => s.id === item.sizeId);
+
+    return {
+      ...item,
+      productName: product ? product.name : "Nieznany produkt",
+      productImage: product ? product.image : "/placeholder.jpg",
+      sizeName: size ? size.name : "Nieznany rozmiar",
+      sizePrice: size ? size.price : 0,
+    };
+  });
+
 
   return (
     <main className="p-4">
       <h1 className="text-2xl font-bold mb-6">Koszyk</h1>
-      {cartItems.length > 0 ? (
+      {updatedCart.length > 0 ? (
         <div className="space-y-4">
-          {cartItems.map((item, index) => (
+          {updatedCart.map((item, index) => (
             <div
               key={index}
               className="flex items-center justify-between bg-white shadow-md p-4 rounded-md"
@@ -92,9 +99,17 @@ export default function Cart() {
                 <span className="text-lg font-medium">{item.name}</span>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold">{item.price} zł</p>
+                <p className="text-lg font-bold">{item.sizePrice} zł</p>
                 <p className="text-sm text-gray-500">Ilość: {item.quantity}</p>
+                <p>Rozmiar: {item.sizeName}</p>
               </div>
+              {/* <form method="post" action="/cart">
+                <input type="hidden" name="productId" value={item.productId} />
+                <input type="hidden" name="size" value={item.sizeId} />
+                <button type="submit" className="text-red-500 hover:text-red-700">
+                  X
+                </button>
+              </form> */}
             </div>
           ))}
         </div>

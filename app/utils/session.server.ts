@@ -74,4 +74,10 @@ export async function addToCart(session: any, productId: string, quantity: numbe
   session.set("cart", cart);
 }
 
+export const removeFromCart = (session: any, productId: string, sizeId: string) => {
+  let cart = session.get("cart") || [];
+  cart = cart.filter((item: any) => item.productId !== productId || item.sizeId !== sizeId);
+  session.set("cart", cart);
+};
+
 export { sessionStorage };
