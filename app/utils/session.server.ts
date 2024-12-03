@@ -54,16 +54,21 @@ export async function destroyUserSession(request: Request) {
   });
 }
 
-export async function addToCart(session: any, productId: string, quantity: number) {
+export async function addToCart(session: any, productId: string, quantity: number, sizeId: string, price: number) {
+  const product = await db.product.findUnique({
+    where: { id: productId },
+    select: { name: true, image: true }, // Pobieranie nazwy i obrazka produktu
+  });
+  
   const cart = session.get("cart") || [];
-  const existingProductIndex = cart.findIndex((item) => item.productId === productId);
+  const existingProductIndex = cart.findIndex((item) => item.productId === productId && item.sizeId === sizeId);
 
   if (existingProductIndex !== -1) {
     // Jeśli produkt już w koszyku, zwiększ ilość
     cart[existingProductIndex].quantity += quantity;
   } else {
     // Jeśli produkt nie jest w koszyku, dodaj go
-    cart.push({ productId, quantity });
+    cart.push({ productId, quantity, name:product.name, image: product.image, sizeId, price });
   }
 
   session.set("cart", cart);
