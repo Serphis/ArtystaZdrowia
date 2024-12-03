@@ -51,22 +51,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        {user.userId !== null ? (
-          <DefaultLayout userId={user.userId} isAdmin={user.isAdmin}>
-            <div className="text-center pt-4">
-              <p>Witaj, użytkowniku!</p>
-              {user.isAdmin === true && <p>Jesteś administratorem.</p>}
-            </div>
-            <Outlet />
-          </DefaultLayout>
-        ) : (
-          <DefaultLayout userId={null}>
-            <div className="text-center pt-4">
-              <p>Musisz się zalogować.</p>
-            </div>
-            <Outlet />
-          </DefaultLayout>
-        )}
+        <DefaultLayout userId={user.userId} isAdmin={user.isAdmin}>
+          <Outlet />
+        </DefaultLayout>
         <Scripts />
       </body>
     </html>
