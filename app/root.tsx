@@ -6,14 +6,14 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
-import "./tailwind.css";
+import styles from "./styles/tailwind.css";
 import DefaultLayout from "./layouts/DefaultLayout"; // Poprawny import layoutu
 import { getUserSession } from "./utils/auth.server";
 import { db } from './services/index';  // Adjust path accordingly
 import { json, LoaderFunction, redirect } from "@remix-run/node";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: styles },
 ];
 
 export const loader: LoaderFunction = async ({ request }) => {

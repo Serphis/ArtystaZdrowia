@@ -2,7 +2,6 @@
   "name": "artystazdrowia",
   "private": true,
   "sideEffects": false,
-  "type": "module",
   "scripts": {
     "build": "remix vite:build",
     "dev": "node server.dev.js",
