@@ -1,14 +1,5 @@
 import { Link } from "@remix-run/react";
-// import { prisma } from "../db";
-// import { LoaderFunction, json } from '@remix-run/node';
-// import { getUserFromSession } from "../utils/session.server";
-// import { useLoaderData } from '@remix-run/react';
 
-// export const loader: LoaderFunction = async ({ request }) => {
-//   const currentUser = await getUserFromSession(request);
-
-//   return json(currentUser);
-// }
 function Login(props) {
   return <Link to="/login">Zaloguj się</Link>;
 }
@@ -35,7 +26,7 @@ const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null
       <header className="sticky top-0 bg-slate-200 z-30 shadow-sm">
         <div className="flex justify-between items-center p-4 px-8">
           <Link to="/" className="text-xl font-bold text-blue-900">
-            Artysta Zdrowia {isAdmin}
+            Artysta Zdrowia
           </Link>
 
           <div className="flex items-center space-x-6">

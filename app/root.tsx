@@ -20,7 +20,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const sessionData = await getUserSession(request);
 
   if (!sessionData || !sessionData.userId) {
-    return { userId: null, isAdmin: false, products: [] };
+    return { userId: null, isAdmin: false };
   }
 
   const user = await db.user.findUnique({
@@ -28,19 +28,16 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 
   if (!user) {
-    return { userId: null, isAdmin: false, products: [] };
+    return { userId: null, isAdmin: false };
   }
 
-  const products = await db.product.findMany();
-
-  return { userId: sessionData.userId, isAdmin: user.isAdmin, products };
+  return { userId: sessionData.userId, isAdmin: user.isAdmin };
 };
 
 export default function App() {
-  
   let userId = null;
   let isAdmin = false;
-
+  
   const user = { userId, isAdmin } = useLoaderData() || { userId: null, isAdmin: false };
 
   return (

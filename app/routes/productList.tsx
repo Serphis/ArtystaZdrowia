@@ -1,8 +1,8 @@
 import { LoaderFunction, json, ActionFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { loadProductData } from '../utils/dataLoader.server';
 import { db } from '../services/index';
 import { Link } from 'react-router-dom';
+import { getUserSession } from "../utils/auth.server";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -11,34 +11,38 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-function Login(props) {
-  return <Link to="/login">Zaloguj się</Link>;
-}
+export const loader: LoaderFunction = async ({ request }) => {
+  const sessionData = await getUserSession(request);
 
-function Logout(props) {
-  return <form method="post" action="/logout">
-    <button type="submit">Wyloguj się</button>
-    </form>;
-}
-
-export function HandleLogin(props){
-  const userId = props.userId;
-  if (userId) {
-    return <Logout />;
+  if (!sessionData || !sessionData.userId) {
+    return { userId: null, isAdmin: false, products: [] };
   }
-  return <Login />;
-}
 
-export const loader: LoaderFunction = async () => {
+  const user = await db.user.findUnique({
+    where: { id: sessionData.userId },
+  });
+
+  if (!user) {
+    return { userId: null, isAdmin: false, products: [] };
+  }
+
   const products = await db.product.findMany();
 
-  return json({ products });
+  return { userId: sessionData.userId, isAdmin: user.isAdmin, products };
 };
 
+// export const loader: LoaderFunction = async () => {
+//   const products = await db.product.findMany();
+
+//   return json({ products });
+// };
 
 export default function ProductList(){
-    let { products } = useLoaderData();
-    let isAdmin = true;
+    let products = [];
+    let userId = null;
+    let isAdmin = false;
+  
+    const data = { userId, isAdmin, products } = useLoaderData() || { userId: null, isAdmin: false, products: [] };
   
     return (
       <main className="font-serif">
