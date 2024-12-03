@@ -25,6 +25,7 @@ export const loader: LoaderFunction = async () => {
   return json({ products });
 };
 
+
 export default function ProductList(){
     const { products } = useLoaderData();
     const isAdmin = true;

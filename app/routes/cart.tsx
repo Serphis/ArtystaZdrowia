@@ -8,12 +8,17 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const productId = formData.get("productId");
 
+  console.log("Form Data:", formData); // Logowanie całych danych formularza
+  console.log("Product ID:", productId); // Logowanie ID produktu
+
   if (!productId) {
     return json({ error: "Brak ID produktu" }, { status: 400 });
   }
 
   // Dodaj produkt do koszyka w sesji (domyślna ilość 1)
   addToCart(session, productId, 1);
+
+  console.log("Session Cart:", session.get("cart")); // Logowanie koszyka w sesji
 
   // Zapisz sesję i przekieruj na stronę koszyka
   return redirect("/cart", {
@@ -27,22 +32,34 @@ export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request);
   const cart = session.get("cart") || [];
 
-  // Pobierz szczegóły produktów z bazy na podstawie `productId`
+  console.log("Session Cart:", cart); // Logowanie koszyka w sesji
+
   const products = await Promise.all(
     cart.map(async (item: { productId: string; quantity: number }) => {
+      console.log("Product ID:", item.productId); // Logowanie ID produktu z koszyka
       const product = await db.product.findUnique({
         where: { id: item.productId },
-        select: { id: true, name: true, price: true, image: true },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          sizes: true, // Zwracamy obiekt `size`
+        },
       });
+
+      console.log("Product from DB:", product); // Logowanie produktu pobranego z bazy danych
+
       return { ...product, quantity: item.quantity };
     })
   );
-  
+
   return json({ cart: products });
 };
 
 export default function Cart() {
   const { cart } = useLoaderData();
+
+  console.log("Cart Data in Component:", cart); // Logowanie danych koszyka w komponencie
 
   return (
     <main className="p-4">

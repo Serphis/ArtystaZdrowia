@@ -5,27 +5,33 @@ import { getUserSession } from "../utils/auth.server"; // Zimportuj funkcję get
 import { getSession, commitSession, addToCart } from "../utils/session.server";
 import { useState, useEffect } from 'react';
 
-export const action: ActionFunction = async ({ request, params }) => {
-  const formData = new URLSearchParams(await request.text());
-  const quantity = parseInt(formData.get("quantity") || "1", 10); // Domyślnie 1
-  const productId = params.productId;
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const productId = formData.get("productId");
+  const size = formData.get("size"); // Pobranie rozmiaru z formularza
+  const quantity = formData.get("quantity") || 1;
+
+  if (!productId || !size) {
+    return json({ error: "Brak ID produktu lub rozmiaru" }, { status: 400 });
+  }
 
   const session = await getSession(request);
-  
-  // Dodaj produkt do koszyka
-  addToCart(session, productId, quantity);
-  
-  const sessionHeader = await commitSession(session);
-  
-  // Przekierowanie na stronę koszyka z nowymi danymi w sesji
-  return new Response("", {
+
+  // Logowanie stanu sesji przed dodaniem do koszyka
+  console.log("Stan sesji przed dodaniem do koszyka:", session);
+
+  addToCart(session, productId, quantity, size); // Przekazywanie rozmiaru
+
+  // Logowanie stanu sesji po dodaniu do koszyka
+  console.log("Stan sesji po dodaniu do koszyka:", session);
+
+  return redirect("/cart", {
     headers: {
-      "Set-Cookie": sessionHeader,
-      Location: "/cart", // Strona koszyka
+      "Set-Cookie": await commitSession(session),
     },
-    status: 302,
   });
 };
+
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   try {
@@ -59,15 +65,15 @@ export default function ProductInfo() {
   const { product, cart } = useLoaderData(); // Odbierz dane z loadera
 
   // Logowanie danych produktu i koszyka w celu diagnostyki
-  console.log("Dane produktu:", product);
-  console.log("Koszyk:", cart);
 
   // Konwertowanie rozmiarów na tablicę
-  const sizesArray = Object.entries(product.sizes).map(([name, { price }]) => ({
-    name,
-    price,
+  const sizesArray = product.sizes.map((size) => ({
+    name: size.name,
+    price: size.price,
   }));
-
+  
+  console.log("Rozmiary po konwersji na tablicę:", sizesArray);
+  
   console.log("Rozmiary po konwersji na tablicę:", sizesArray);
 
   // Ustawienie domyślnego rozmiaru
@@ -91,16 +97,28 @@ export default function ProductInfo() {
     const size = formData.get("size");
     const quantity = formData.get("quantity");
 
+    console.log("Dane z formularza przed wysłaniem:", { productId: product.id, size, quantity });
+
     await fetch("/cart", {
       method: "POST",
-      body: JSON.stringify({ productId: product.id, size, quantity }),
+      body: new URLSearchParams({ 
+        productId: product.id, 
+        size: String(size), 
+        quantity: String(quantity)
+      }),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
-  };
+    window.location.href = "/cart";
 
+  };
+  
   const sizeLabels = ['Mały (40g)', 'Średni (90g)', 'Duży (190g)']; // mapowanie liczb na nazwy rozmiarów
+
+  console.log("Dane produktu:", product);
+  console.log("Koszyk:", cart);
+
 
   return (
     <main className="font-serif">
