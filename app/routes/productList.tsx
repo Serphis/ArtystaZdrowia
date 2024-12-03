@@ -11,24 +11,34 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
+function Login(props) {
+  return <Link to="/login">Zaloguj się</Link>;
+}
+
+function Logout(props) {
+  return <form method="post" action="/logout">
+    <button type="submit">Wyloguj się</button>
+    </form>;
+}
+
+export function HandleLogin(props){
+  const userId = props.userId;
+  if (userId) {
+    return <Logout />;
+  }
+  return <Login />;
+}
+
 export const loader: LoaderFunction = async () => {
-  const products = await db.product.findMany({
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      description: true,
-      sizes: true, // Pobieramy nowe pole
-    },
-  });
+  const products = await db.product.findMany();
 
   return json({ products });
 };
 
 
 export default function ProductList(){
-    const { products } = useLoaderData();
-    const isAdmin = true;
+    let { products } = useLoaderData();
+    let isAdmin = true;
   
     return (
       <main className="font-serif">

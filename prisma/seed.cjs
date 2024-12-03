@@ -51,6 +51,7 @@ var products = [
         description: opis1,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/r3kuos5p66yzwtgc7ucd.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -62,6 +63,7 @@ var products = [
         description: opis2,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/q08xfzu2afg2iysf093f.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -73,6 +75,7 @@ var products = [
         description: opis3,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/lepa6zlka5vgpjinxibq.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -84,6 +87,7 @@ var products = [
         description: opis4,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/ngcxnqdshaadqdq3aook.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -95,6 +99,7 @@ var products = [
         description: opis5,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/lw8tmhhpvt3wb1vf8tnu.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -106,6 +111,7 @@ var products = [
         description: opis6,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/nadrkazxnrvlrpoi8aeu.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -117,6 +123,7 @@ var products = [
         description: opis7,
         stock: 0,
         image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/pu0zwwrf5uilvuiipwfx.jpg',
+        price: 0,
         sizes: [
             { name: 'S - 40g', price: 12.00 },
             { name: 'M - 90g', price: 25.00 },
@@ -126,47 +133,33 @@ var products = [
 ];
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var _loop_1, _i, products_1, product;
+        var _i, products_1, product, createdProduct;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _loop_1 = function (product) {
-                        var createdProduct, sizesData;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0: return [4 /*yield*/, prisma.product.create({
-                                        data: {
-                                            name: product.name,
-                                            description: product.description,
-                                            stock: product.stock,
-                                            image: product.image,
-                                        },
-                                    })];
-                                case 1:
-                                    createdProduct = _b.sent();
-                                    sizesData = product.sizes.map(function (size) { return ({
-                                        name: size.name,
-                                        price: size.price,
-                                        productId: createdProduct.id,
-                                    }); });
-                                    return [4 /*yield*/, prisma.size.createMany({
-                                            data: sizesData,
-                                        })];
-                                case 2:
-                                    _b.sent();
-                                    console.log("Produkt ".concat(createdProduct.name, " zosta\u0142 dodany do bazy z rozmiarami!"));
-                                    return [2 /*return*/];
-                            }
-                        });
-                    };
                     _i = 0, products_1 = products;
                     _a.label = 1;
                 case 1:
                     if (!(_i < products_1.length)) return [3 /*break*/, 4];
                     product = products_1[_i];
-                    return [5 /*yield**/, _loop_1(product)];
+                    return [4 /*yield*/, prisma.product.create({
+                            data: {
+                                name: product.name,
+                                description: product.description,
+                                stock: product.stock,
+                                image: product.image,
+                                price: product.price,
+                                sizes: {
+                                    create: product.sizes.map(function (size) { return ({
+                                        name: size.name,
+                                        price: size.price,
+                                    }); }),
+                                },
+                            },
+                        })];
                 case 2:
-                    _a.sent();
+                    createdProduct = _a.sent();
+                    console.log("Produkt ".concat(createdProduct.name, " zosta\u0142 dodany do bazy z rozmiarami!"));
                     _a.label = 3;
                 case 3:
                     _i++;

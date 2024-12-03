@@ -27,7 +27,7 @@ export function HandleLogin(props){
   return <Login />;
 }
 
-const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null }> = ({ children, userId }) => {
+const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null, isAdmin?: boolean | null }> = ({ children, userId, isAdmin }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -35,7 +35,7 @@ const DefaultLayout: React.FC<{ children: React.ReactNode, userId: string | null
       <header className="sticky top-0 bg-slate-200 z-30 shadow-sm">
         <div className="flex justify-between items-center p-4 px-8">
           <Link to="/" className="text-xl font-bold text-blue-900">
-            Artysta Zdrowia
+            Artysta Zdrowia {isAdmin}
           </Link>
 
           <div className="flex items-center space-x-6">

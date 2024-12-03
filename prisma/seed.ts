@@ -16,6 +16,7 @@ const products = [
     description: opis1,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/r3kuos5p66yzwtgc7ucd.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -27,6 +28,7 @@ const products = [
     description: opis2,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/q08xfzu2afg2iysf093f.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -38,6 +40,7 @@ const products = [
     description: opis3,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048713/public/swiecesojowe/lepa6zlka5vgpjinxibq.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -49,6 +52,7 @@ const products = [
     description: opis4,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/ngcxnqdshaadqdq3aook.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -60,6 +64,7 @@ const products = [
     description: opis5,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/lw8tmhhpvt3wb1vf8tnu.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -71,6 +76,7 @@ const products = [
     description: opis6,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/nadrkazxnrvlrpoi8aeu.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -82,6 +88,7 @@ const products = [
     description: opis7,
     stock: 0,
     image: 'https://res.cloudinary.com/djio9fbja/image/upload/v1733048714/public/swiecesojowe/pu0zwwrf5uilvuiipwfx.jpg',
+    price: 0,
     sizes: [
       { name: 'S - 40g', price: 12.00 },
       { name: 'M - 90g', price: 25.00 },
@@ -98,17 +105,14 @@ async function main() {
         description: product.description,
         stock: product.stock,
         image: product.image,
+        price: product.price,
+        sizes: {
+          create: product.sizes.map((size) => ({
+            name: size.name,
+            price: size.price,
+          })),
+        },
       },
-    });
-
-    const sizesData = product.sizes.map((size) => ({
-      name: size.name,
-      price: size.price,
-      productId: createdProduct.id,
-    }));
-
-    await prisma.size.createMany({
-      data: sizesData,
     });
 
     console.log(`Produkt ${createdProduct.name} został dodany do bazy z rozmiarami!`);

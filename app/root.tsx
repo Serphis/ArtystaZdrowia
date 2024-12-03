@@ -37,8 +37,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function App() {
+  
+  let userId = null;
+  let isAdmin = false;
 
-  const { userId, isAdmin } = useLoaderData() || { userId: null, isAdmin: false };
+  const user = { userId, isAdmin } = useLoaderData() || { userId: null, isAdmin: false };
 
   return (
     <html lang="pl">
@@ -51,11 +54,11 @@ export default function App() {
         <Links />
       </head>
       <body>
-        {userId !== null ? (
-          <DefaultLayout userId={userId}>
+        {user.userId !== null ? (
+          <DefaultLayout userId={user.userId} isAdmin={user.isAdmin}>
             <div className="text-center pt-4">
               <p>Witaj, użytkowniku!</p>
-              {isAdmin === true && <p>Jesteś administratorem.</p>}
+              {user.isAdmin === true && <p>Jesteś administratorem.</p>}
             </div>
             <Outlet />
           </DefaultLayout>
